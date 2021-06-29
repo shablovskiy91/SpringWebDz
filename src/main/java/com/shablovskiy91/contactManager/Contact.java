@@ -6,7 +6,7 @@ public class Contact {
     private String telNumber;
     private String email;
 
-    public Contact(long id, String fullName, String telNumber, String email) {
+    public Contact(long id, String fullName) {
         this.id = id;
         this.fullName = fullName;
         this.telNumber = telNumber;
