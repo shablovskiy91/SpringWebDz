@@ -20,7 +20,7 @@ public class ContactController {
         this.contactFacade = contactFacade;
     }
 
-    @PostMapping
+    @PostMapping("")
     public ContactDto createContact(
             @RequestParam String fullName
     ) {

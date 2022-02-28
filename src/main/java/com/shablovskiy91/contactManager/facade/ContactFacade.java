@@ -37,18 +37,18 @@ public class ContactFacade {
         return contactDtos;
     }
 
-    public ContactDto updateContact(long id, String fullName, String telNumber, String email) {
-        Contact updatableContact = contactDao.getContact(id);
+    public ContactDto updateContact(long contactId, String fullName, String telNumber, String email) {
+        Contact updatableContact = contactDao.getContact(contactId);
         if (updatableContact.getFullName() == null || !updatableContact.getFullName().equals(fullName)) {
-            updatableContact.setFullName(fullName);
+            contactDao.setFullName(contactId, fullName);
         }
         if (updatableContact.getTelNumber() == null || !updatableContact.getTelNumber().equals(telNumber)) {
-            updatableContact.setTelNumber(telNumber);
+            contactDao.setTelNumber(contactId, telNumber);
         }
         if (updatableContact.getEmail() == null || !updatableContact.getEmail().equals(email)) {
-            updatableContact.setEmail(email);
+            contactDao.setEmail(contactId, email);
         }
-        return new ContactDto(contactDao.getContact(id));
+        return new ContactDto(contactDao.getContact(contactId));
     }
 
 }

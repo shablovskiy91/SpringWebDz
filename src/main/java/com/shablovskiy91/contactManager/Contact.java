@@ -6,11 +6,16 @@ public class Contact {
     private String telNumber;
     private String email;
 
-    public Contact(long id, String fullName) {
+    public Contact(long id, String fullName, String telNumber, String email) {
         this.id = id;
         this.fullName = fullName;
         this.telNumber = telNumber;
         this.email = email;
+    }
+
+    public Contact(long id, String fullName) {
+        this.id = id;
+        this.fullName = fullName;
     }
 
     public long getId() {

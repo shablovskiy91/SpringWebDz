@@ -6,12 +6,8 @@ import java.util.Set;
 
 public interface ContactDao {
 
+    public Contact addContact(long contactId, String fullName);
     public Contact addContact(String fullName);
-
-    // Optional - так как контакт может быть и не найден. Тогда мы вернём пустой Optional
-    Optional<Contact> findContact(long contactId);
-    Optional<Contact> findContactByFullName(String fullName);
-    Optional<Contact> findContactByTelNumber(String telNumber);
     Contact getContact(long contactId);
     List<Contact> getAllContacts();
     void setFullName(long contactId, String fullName);
