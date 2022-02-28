@@ -13,5 +13,5 @@ public interface ContactDao {
     void setFullName(long contactId, String fullName);
     void setTelNumber(long contactId, String telNumber);
     void setEmail(long contactId, String email);
-
+    void deleteContact(long contactId);
 }

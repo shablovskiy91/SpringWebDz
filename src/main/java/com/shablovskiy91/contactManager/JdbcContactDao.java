@@ -132,5 +132,13 @@ public class JdbcContactDao implements ContactDao {
                 email, contactId
         );
     }
+
+    @Override
+    public void deleteContact(long contactId) {
+        jdbcTemplate.update(
+                DELETE_CONTACT_SQL,
+                contactId
+        );
+    }
 }
 

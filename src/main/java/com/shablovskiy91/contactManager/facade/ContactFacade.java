@@ -51,4 +51,7 @@ public class ContactFacade {
         return new ContactDto(contactDao.getContact(contactId));
     }
 
+    public void deleteContact(long contactId) {
+        contactDao.deleteContact(contactId);
+    }
 }

@@ -27,6 +27,13 @@ public class ContactController {
         return contactFacade.createContact(fullName);
     }
 
+    @PostMapping("/delete")
+    public void deleteContact(
+            @RequestParam long contactId
+    ) {
+        contactFacade.deleteContact(contactId);
+    }
+
     @GetMapping
     public List<ContactDto> getAllContacts() {
         return contactFacade.getAllContactDtos();
@@ -49,6 +56,8 @@ public class ContactController {
         contactFacade.updateContact(contactId, fullName, telNumber, email);
         return contactFacade.getContactDto(contactId);
     }
+
+
 
 }
 
