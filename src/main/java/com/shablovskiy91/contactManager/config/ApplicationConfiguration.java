@@ -7,3 +7,5 @@ import org.springframework.context.annotation.Configuration;
 @ComponentScan("com.shablovskiy91.contactManager")
 public class ApplicationConfiguration {
 }
+
+

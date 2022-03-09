@@ -1,7 +1,6 @@
 package com.shablovskiy91.contactManager.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.shablovskiy91.contactManager.Contact;
 
@@ -21,7 +20,7 @@ public class ContactDto {
     private final String email;
 
     public ContactDto(Contact contact) {
-        this.contactId = contact.getId();
+        this.contactId = contact.getContactId();
         this.fullName = contact.getFullName();
         this.telNumber = contact.getTelNumber();
         this.email = contact.getEmail();

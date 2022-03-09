@@ -2,8 +2,6 @@ package com.shablovskiy91.contactManager.facade;
 
 import com.shablovskiy91.contactManager.Contact;
 import com.shablovskiy91.contactManager.ContactDao;
-import com.shablovskiy91.contactManager.ContactManagerMain;
-import com.shablovskiy91.contactManager.controller.ContactController;
 import com.shablovskiy91.contactManager.controller.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,25 +1,38 @@
 package com.shablovskiy91.contactManager;
 
-public class Contact {
-    private final long id;
-    private String fullName;
-    private String telNumber;
-    private String email;
+import java.util.Objects;
 
-    public Contact(long id, String fullName, String telNumber, String email) {
-        this.id = id;
+public class Contact {
+    private long contactId;
+    private  String fullName;
+    private  String telNumber;
+    private  String email;
+
+
+    public Contact(long contactId, String fullName, String telNumber, String email) {
+        this.contactId = contactId;
         this.fullName = fullName;
         this.telNumber = telNumber;
         this.email = email;
     }
 
-    public Contact(long id, String fullName) {
-        this.id = id;
+    public Contact(String fullName, String telNumber, String email) {
+        this.fullName = fullName;
+        this.telNumber = telNumber;
+        this.email = email;
+    }
+
+    public Contact(long contactId, String fullName) {
+        this.contactId = contactId;
         this.fullName = fullName;
     }
 
-    public long getId() {
-        return id;
+    public void setContactId(long contactId) {
+        this.contactId = contactId;
+    }
+
+    public long getContactId() {
+        return contactId;
     }
 
     public String getFullName() {
@@ -34,21 +47,24 @@ public class Contact {
         return email;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return Objects.equals(contactId, contact.contactId) && Objects.equals(fullName, contact.fullName) &&
+                Objects.equals(telNumber, contact.telNumber) &&
+                Objects.equals(email, contact.email);
     }
 
-    public void setTelNumber(String telNumber) {
-        this.telNumber = telNumber;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    @Override
+    public int hashCode() {
+        return Objects.hash(contactId, fullName, telNumber, email);
     }
 
     @Override
     public String toString() {
-        return "Contact id " + id + " data: " + "\r\n" +
+        return "Contact id " + contactId + " data: " + "\r\n" +
                 "Full Name: " + fullName + "\r\n" +
                 "Tel Number: " + telNumber + "\r\n" +
                 "Email: " + email + "\r\n";

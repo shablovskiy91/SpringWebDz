@@ -2,15 +2,23 @@ package com.shablovskiy91.contactManager;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcContactDao implements ContactDao {
+
+    private final NamedParameterJdbcTemplate namedJdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+
+    public JdbcContactDao(NamedParameterJdbcTemplate namedJdbcTemplate, JdbcTemplate jdbcTemplate) {
+        this.namedJdbcTemplate = namedJdbcTemplate;
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     private static final String GET_ALL_CONTACT_SQL = "" +
             "SELECT" +
@@ -60,12 +68,6 @@ public class JdbcContactDao implements ContactDao {
                     rs.getString("telnumber"),
                     rs.getString("email"));
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public JdbcContactDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     @Override
     public List<Contact> getAllContacts() {
         return jdbcTemplate.query(
@@ -84,12 +86,33 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public Contact addContact(long contactId, String fullName) {
-        jdbcTemplate.update(
-                "INSERT INTO CONTACT(ID, FULLNAME) VALUES(?, ?)",
-                contactId, fullName
-        );
-        return new Contact(contactId, fullName);
+    public long addContact(Contact contact) {
+        long contactId = contact.getContactId();
+        String fullName = contact.getFullName();
+        String telNumber = contact.getTelNumber();
+        String email = contact.getEmail();
+
+        if (contactId == 0) {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(
+                    connection -> {
+                        var ps = connection.prepareStatement("INSERT INTO CONTACT(FULLNAME, TELNUMBER, EMAIL) VALUES(?, ?, ?)", new String[] {"id"});
+                        ps.setString(1, fullName);
+                        ps.setString(2, telNumber);
+                        ps.setString(3, email);
+                        return ps;
+                    },
+                    keyHolder
+            );
+            contactId = keyHolder.getKey().longValue();
+        }
+        else {
+            jdbcTemplate.update(
+                    "INSERT INTO CONTACT(ID, FULLNAME, TELNUMBER, EMAIL) VALUES(?, ?, ?, ?)",
+                    contactId, fullName, telNumber, email
+            );
+        }
+        return contactId;
     }
 
     @Override
