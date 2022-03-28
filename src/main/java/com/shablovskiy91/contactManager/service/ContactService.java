@@ -29,7 +29,6 @@ public class ContactService implements IContactService {
 
     @Override
     public void uploadCSVFile(MultipartFile file) throws Exception {
-        List<ContactDto> contactDtos = new ArrayList<>();
         // validate file
         if (file.isEmpty()) {
             throw new NullPointerException("CSV-file to upload is empty");
