@@ -134,7 +134,7 @@ public class JdbcContactDao implements ContactDao {
     }
 
     @Override
-    public List<Contact> addContacts(List<Contact> contacts) {
+    public void addContacts(List<Contact> contacts) {
         var args = contacts.stream()
                 .map(contact -> new MapSqlParameterSource()
                         .addValue("fullname", contact.getFullName())
@@ -145,7 +145,6 @@ public class JdbcContactDao implements ContactDao {
                 "INSERT INTO CONTACT(FULLNAME, TELNUMBER, EMAIL) VALUES(:fullname, :telnumber, :email)",
                 args
         );
-        return contacts;
     }
 
     @Override
