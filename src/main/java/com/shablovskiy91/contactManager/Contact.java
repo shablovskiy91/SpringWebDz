@@ -1,11 +1,17 @@
 package com.shablovskiy91.contactManager;
 
+import com.opencsv.bean.CsvBindByName;
+
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Contact {
     private long contactId;
+    @CsvBindByName(column = "fullname")
     private  String fullName;
+    @CsvBindByName(column = "telnumber")
     private  String telNumber;
+    @CsvBindByName(column = "email")
     private  String email;
 
 
@@ -25,6 +31,9 @@ public class Contact {
     public Contact(long contactId, String fullName) {
         this.contactId = contactId;
         this.fullName = fullName;
+    }
+
+    public Contact() {
     }
 
     public void setContactId(long contactId) {

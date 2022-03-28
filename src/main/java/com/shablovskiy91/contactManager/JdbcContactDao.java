@@ -2,6 +2,7 @@ package com.shablovskiy91.contactManager;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -130,6 +131,21 @@ public class JdbcContactDao implements ContactDao {
 
         var contactId = keyHolder.getKey().longValue();
         return new Contact(contactId, fullName);
+    }
+
+    @Override
+    public List<Contact> addContacts(List<Contact> contacts) {
+        var args = contacts.stream()
+                .map(contact -> new MapSqlParameterSource()
+                        .addValue("fullname", contact.getFullName())
+                        .addValue("telnumber", contact.getTelNumber())
+                        .addValue("email", contact.getEmail())
+                ).toArray(MapSqlParameterSource[]::new);
+        namedJdbcTemplate.batchUpdate(
+                "INSERT INTO CONTACT(FULLNAME, TELNUMBER, EMAIL) VALUES(:fullname, :telnumber, :email)",
+                args
+        );
+        return contacts;
     }
 
     @Override
