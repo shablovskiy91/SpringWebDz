@@ -15,14 +15,16 @@ public class Contact {
     private long contactId;
     @Column(name = "fullname", nullable = false)
     @CsvBindByName(column = "fullname")
-    private  String fullName;
+    private String fullName;
     @Column(name = "telnumber")
     @CsvBindByName(column = "telnumber")
-    private  String telNumber;
+    private String telNumber;
     @Column(name = "email")
     @CsvBindByName(column = "email")
-    private  String email;
+    private String email;
 
+    public Contact() {
+    }
 
     public Contact(long contactId, String fullName, String telNumber, String email) {
         this.contactId = contactId;
@@ -40,9 +42,6 @@ public class Contact {
     public Contact(long contactId, String fullName) {
         this.contactId = contactId;
         this.fullName = fullName;
-    }
-
-    public Contact() {
     }
 
     public Contact(String fullName) {
@@ -67,6 +66,18 @@ public class Contact {
 
     public String getEmail() {
         return email;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public void setTelNumber(String telNumber) {
+        this.telNumber = telNumber;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

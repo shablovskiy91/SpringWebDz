@@ -7,7 +7,7 @@ import com.shablovskiy91.contactManager.Contact;
 @JsonDeserialize
 public class ContactDto {
 
-    @JsonProperty("contactId")
+    @JsonProperty("id")
     private final long contactId;
 
     @JsonProperty("fullName")

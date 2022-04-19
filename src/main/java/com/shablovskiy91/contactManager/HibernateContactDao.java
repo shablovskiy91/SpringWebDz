@@ -41,7 +41,13 @@ public class HibernateContactDao implements ContactDao{
 
     @Override
     public void addContacts(List<Contact> contacts) {
-        //needed to implement
+        for (var contact : contacts) {
+            try (var session = sessionFactory.openSession()) {
+                var transaction = session.beginTransaction();
+                var id = (Long) session.save(contact);
+                transaction.commit();
+            }
+        }
     }
 
     @Override
@@ -61,21 +67,52 @@ public class HibernateContactDao implements ContactDao{
 
     @Override
     public void setFullName(long contactId, String fullName) {
-        //needed to implement
+        try (var session = sessionFactory.openSession()) {
+            var transaction = session.beginTransaction();
+            var updatableContact = getContact(contactId);
+            if (updatableContact != null) {
+                updatableContact.setFullName(fullName);
+                session.update(updatableContact);
+            }
+            transaction.commit();
+        }
     }
 
     @Override
     public void setTelNumber(long contactId, String telNumber) {
-        //needed to implement
+        try (var session = sessionFactory.openSession()) {
+            var transaction = session.beginTransaction();
+            var updatableContact = getContact(contactId);
+            if (updatableContact != null) {
+                updatableContact.setTelNumber(telNumber);
+                session.update(updatableContact);
+            }
+            transaction.commit();
+        }
     }
 
     @Override
     public void setEmail(long contactId, String email) {
-        //needed to implement
+        try (var session = sessionFactory.openSession()) {
+            var transaction = session.beginTransaction();
+            var updatableContact = getContact(contactId);
+            if (updatableContact != null) {
+                updatableContact.setEmail(email);
+                session.update(updatableContact);
+            }
+            transaction.commit();
+        }
     }
 
     @Override
     public void deleteContact(long contactId) {
-        //needed to implement
+        try (var session = sessionFactory.openSession()) {
+            var transaction = session.beginTransaction();
+            var contact = getContact(contactId);
+            if (contact != null) {
+                session.delete(contact);
+            }
+            transaction.commit();
+        }
     }
 }
