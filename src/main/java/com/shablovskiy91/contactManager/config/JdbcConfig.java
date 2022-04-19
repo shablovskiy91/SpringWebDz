@@ -30,6 +30,7 @@ public class JdbcConfig {
     @Value("${jdbc.password}")
     private String jdbcPassword;
 
+
     @Bean
     public DataSource dataSource() {
         var dataSource = new BasicDataSource();

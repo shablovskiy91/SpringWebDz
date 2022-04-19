@@ -2,15 +2,24 @@ package com.shablovskiy91.contactManager;
 
 import com.opencsv.bean.CsvBindByName;
 
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Entity
+@Table(name = "CONTACT")
 public class Contact {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long contactId;
+    @Column(name = "fullname", nullable = false)
     @CsvBindByName(column = "fullname")
     private  String fullName;
+    @Column(name = "telnumber")
     @CsvBindByName(column = "telnumber")
     private  String telNumber;
+    @Column(name = "email")
     @CsvBindByName(column = "email")
     private  String email;
 
@@ -34,6 +43,10 @@ public class Contact {
     }
 
     public Contact() {
+    }
+
+    public Contact(String fullName) {
+        this.fullName = fullName;
     }
 
     public void setContactId(long contactId) {

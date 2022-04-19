@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository("jdbc")
 public class JdbcContactDao implements ContactDao {
 
     private final NamedParameterJdbcTemplate namedJdbcTemplate;

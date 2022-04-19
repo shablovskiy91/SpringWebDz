@@ -6,6 +6,7 @@ import com.shablovskiy91.contactManager.Contact;
 import com.shablovskiy91.contactManager.ContactDao;
 import com.shablovskiy91.contactManager.controller.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,9 @@ import java.util.List;
 @Service
 public class ContactService implements IContactService {
 
+    @Autowired
     private final ContactDao contactDao;
 
-    @Autowired
     public ContactService(ContactDao contactDao) {
         this.contactDao = contactDao;
     }

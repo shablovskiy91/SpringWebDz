@@ -11,6 +11,7 @@ import com.shablovskiy91.contactManager.Contact;
 import com.shablovskiy91.contactManager.ContactDao;
 import com.shablovskiy91.contactManager.controller.ContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,9 @@ import java.util.*;
 @Service
 public class ContactFacade {
 
+    @Autowired
     private final ContactDao contactDao;
 
-    @Autowired
     public ContactFacade(ContactDao contactDao) {
         this.contactDao = contactDao;
     }
