@@ -98,8 +98,7 @@ public class ContactDaoTests {
 
         contactDao.deleteContact(contactId);
 
-        assertThatThrownBy(() -> contactDao.getContact(contactId))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+        assertThat(contactDao.getContact(contactId)).isNull();
 
     }
 }
