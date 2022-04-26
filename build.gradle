@@ -10,13 +10,16 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.5.1'
-    implementation group: 'org.springframework', name: 'spring-jdbc', version: '5.3.14'
-    implementation group: 'org.springframework', name: 'spring-context', version: '5.3.13'
-    implementation group: 'org.apache.commons', name: 'commons-dbcp2', version: '2.7.0'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.1'
-    implementation 'com.opencsv:opencsv:4.1'
-    implementation "org.hibernate:hibernate-core:5.4.27.Final"
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.7'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.7'
+    implementation 'org.springframework:spring-context:5.3.19'
+    implementation 'org.postgresql:postgresql:42.3.4'
+    implementation 'com.opencsv:opencsv:5.6'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
+}
+
+test {
+    useJUnitPlatform()
 }

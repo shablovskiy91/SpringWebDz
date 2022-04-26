@@ -9,13 +9,11 @@ package com.shablovskiy91.contactManager;
  * Тесты проверяют корректность реализации ContactDao.
  */
 
-import com.shablovskiy91.contactManager.config.ApplicationConfiguration;
+import com.shablovskiy91.contactManager.repository.ContactRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -28,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @SpringBootTest
 @Sql("classpath:contact.sql")
 public class ContactDaoTests {
-    @Autowired ContactDao contactDao;
+    @Autowired
+    ContactRepository contactRepository;
 
         private static final Contact IVAN = new Contact(
         1000L, "Ivan Ivanov", "1234567", "iivanov@gmail.com"
@@ -46,59 +45,64 @@ public class ContactDaoTests {
     @Test
     void addContact() {
         var contact = new Contact("Jackie Chan", "1234567890", "jchan@gmail.com");
-        long contactId = contactDao.addContact(contact);
+        var contactId = contactRepository.save(contact).getContactId();
         contact.setContactId(contactId);
-
-        var contactInDb = contactDao.getContact(contactId);
-
+        var contactInDb = contactRepository.findById(contactId)
+                .orElseThrow(() -> new IllegalArgumentException());;
 
         assertThat(contactInDb).isEqualTo(contact);
     }
 
     @Test
     void getContact() {
-        var contact = contactDao.getContact(IVAN.getContactId());
+        var contact = contactRepository.findById(IVAN.getContactId())
+                .orElseThrow(() -> new IllegalArgumentException());
+
         assertThat(contact).isEqualTo(IVAN);
     }
 
     @Test
     void getAllContacts() {
-        var contacts = contactDao.getAllContacts();
+        var contacts = contactRepository.findAll();
 
         assertThat(contacts).containsAll(PERSISTED_CONTACTS);
     }
 
     @Test
     void updatePhoneNumber() {
-        var contact = new Contact("Jekyll Hide", "", "jhide@gmail.com");
-        var contactId = contactDao.addContact(contact);
-        var newPhone = "777-77-77";
-        contactDao.setTelNumber(contactId, newPhone);
+        var contact = new Contact("Jekyll Hide", "jhide@gmail.com", "");
+        var contactId = contactRepository.save(contact).getContactId();
 
-        var updatedContact = contactDao.getContact(contactId);
+        var newPhone = "777-77-77";
+        contactRepository.setTelNumber(contactId, newPhone);
+
+        var updatedContact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new IllegalArgumentException());;
         assertThat(updatedContact.getTelNumber()).isEqualTo(newPhone);
     }
 
     @Test
     void updateEmail() {
         var contact = new Contact("Captain America", "", "");
-        var contactId = contactDao.addContact(contact);
+        var contactId = contactRepository.save(contact).getContactId();
 
         var newEmail = "cap@gmail.com";
-        contactDao.setEmail(contactId, newEmail);
+        contactRepository.setEmail(contactId, newEmail);
 
-        var updatedContact = contactDao.getContact(contactId);
+        var updatedContact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new IllegalArgumentException());;
         assertThat(updatedContact.getEmail()).isEqualTo(newEmail);
     }
 
 @Test
     void deleteContact() {
         var contact = new Contact("To be Deleted", "", "");
-        var contactId = contactDao.addContact(contact);
+        var contactId = contactRepository.save(contact).getContactId();
 
-        contactDao.deleteContact(contactId);
+        contactRepository.deleteById(contactId);
 
-        assertThat(contactDao.getContact(contactId)).isNull();
+        var deletedContact = contactRepository.findById(contactId);
+        assertThat(deletedContact).isNotPresent();
 
     }
 }

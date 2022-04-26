@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.shablovskiy91.contactManager.Contact;
 
+import java.util.Optional;
+
 @JsonDeserialize
 public class ContactDto {
 

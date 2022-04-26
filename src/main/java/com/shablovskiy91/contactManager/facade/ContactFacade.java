@@ -1,66 +1,58 @@
 package com.shablovskiy91.contactManager.facade;
 
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
 import com.shablovskiy91.contactManager.Contact;
-import com.shablovskiy91.contactManager.ContactDao;
 import com.shablovskiy91.contactManager.controller.ContactDto;
+import com.shablovskiy91.contactManager.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
 import java.util.*;
 
 @Service
 public class ContactFacade {
 
     @Autowired
-    private final ContactDao contactDao;
+    private final ContactRepository contactRepository;
 
-    public ContactFacade(ContactDao contactDao) {
-        this.contactDao = contactDao;
+    public ContactFacade(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
     }
 
     public ContactDto createContact(String fullName) {
-        Contact contact = contactDao.addContact(fullName);
+        Contact contact = new Contact(fullName);
+        contactRepository.save(contact);
         return new ContactDto(contact);
     }
 
     public ContactDto getContactDto(long contactId) {
-        return new ContactDto(contactDao.getContact(contactId));
+        Optional<Contact> contact = contactRepository.findById(contactId);
+        return new ContactDto(contact.get());
     }
 
     public List<ContactDto> getAllContactDtos() {
         List<ContactDto> contactDtos = new ArrayList<>();
-        for (Contact contact : contactDao.getAllContacts()) {
+        for (Contact contact : contactRepository.findAll()) {
             contactDtos.add(new ContactDto(contact));
         }
         return contactDtos;
     }
 
     public ContactDto updateContact(long contactId, String fullName, String telNumber, String email) {
-        Contact updatableContact = contactDao.getContact(contactId);
-        if (updatableContact.getFullName() == null || !updatableContact.getFullName().equals(fullName)) {
-            contactDao.setFullName(contactId, fullName);
+        Optional<Contact> updatableContact = contactRepository.findById(contactId);
+        if (updatableContact.get().getFullName() == null || !updatableContact.get().getFullName().equals(fullName)) {
+            contactRepository.setFullName(contactId, fullName);
         }
-        if (updatableContact.getTelNumber() == null || !updatableContact.getTelNumber().equals(telNumber)) {
-            contactDao.setTelNumber(contactId, telNumber);
+        if (updatableContact.get().getTelNumber() == null || !updatableContact.get().getTelNumber().equals(telNumber)) {
+            contactRepository.setTelNumber(contactId, telNumber);
         }
-        if (updatableContact.getEmail() == null || !updatableContact.getEmail().equals(email)) {
-            contactDao.setEmail(contactId, email);
+        if (updatableContact.get().getEmail() == null || !updatableContact.get().getEmail().equals(email)) {
+            contactRepository.setEmail(contactId, email);
         }
-        return new ContactDto(contactDao.getContact(contactId));
+        Optional<Contact> contact = contactRepository.findById(contactId);
+        return new ContactDto(contact.get());
     }
 
     public void deleteContact(long contactId) {
-        contactDao.deleteContact(contactId);
+        contactRepository.deleteById(contactId);
     }
 }

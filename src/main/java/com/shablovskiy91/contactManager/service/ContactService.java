@@ -3,29 +3,24 @@ package com.shablovskiy91.contactManager.service;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.shablovskiy91.contactManager.Contact;
-import com.shablovskiy91.contactManager.ContactDao;
-import com.shablovskiy91.contactManager.controller.ContactDto;
+import com.shablovskiy91.contactManager.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ContactService implements IContactService {
 
     @Autowired
-    private final ContactDao contactDao;
+    private final ContactRepository contactRepository;
 
-    public ContactService(ContactDao contactDao) {
-        this.contactDao = contactDao;
+    public ContactService(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
     }
 
     @Override
@@ -47,7 +42,7 @@ public class ContactService implements IContactService {
                 List<Contact> contacts = csvToBean.parse();
 
                 // add contacts to Database
-                contactDao.addContacts(contacts);
+                contactRepository.saveAll(contacts);
 
             } catch (Exception e) {
                 throw e;
